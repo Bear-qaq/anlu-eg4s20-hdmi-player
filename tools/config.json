@@ -1,0 +1,77 @@
+{
+  "_comment": "FPGA 资料打包配置。改这里就能调整行为，不用动代码。",
+
+  "inputs": ["raw", "docs"],
+  "outDir": "ai",
+
+  "guidanceFiles": ["AI_GUIDE.md"],
+
+  "dropDirNames": [
+    ".git", ".svn", ".hg",
+    ".Xil", ".cache", ".sim", ".hw", ".ip_user_files", ".runs", ".gen", ".srcs",
+    ".metadata", ".analytics", ".idea", ".vscode", ".vs", ".settings",
+    "ip_user_files", "xsim.dir", "node_modules", "__pycache__",
+    "db", "incremental_db", "greybox_tmp", "work", "simulation", "synthesis",
+    "runs", "output_files", "stimulus", "wave", "waves", "lint", "ip_catalog",
+    "backup", "Backup", "recovery", "tmp", "temp"
+  ],
+
+  "_dropDirGlobs_comment": "TD(Tang Dynasty) 的构建目录是 <工程名>_Runs，不是 *.runs，两种都要覆盖。",
+  "dropDirGlobs": ["*.runs", "*_Runs", "*_runs", "*.cache", "*.hw", "*.sim", "*.ip_user_files", "*_backup*", "*.db"],
+
+  "dropExtensions": [
+    ".bit", ".fs", ".bin", ".rbf", ".sof", ".pof", ".jed", ".mcs", ".exo",
+    ".dcp", ".ltx", ".xsa", ".hdf", ".wdb", ".wlf", ".vcd", ".ghw", ".qws",
+    ".pyc", ".pyo", ".class", ".o", ".obj", ".exe", ".dll", ".so", ".a", ".lib",
+    ".zip", ".rar", ".7z", ".tar", ".gz", ".xz", ".iso", ".msi",
+    ".jou", ".pbj", ".str", ".lock", ".bak", ".tmp", ".swp", ".ds_store",
+    ".qdb", ".cdb", ".hdb", ".rdb", ".ddb", ".tdb", ".pdb", ".sdb", ".edf", ".ngc",
+
+    ".logw", ".qor", ".status", ".area", ".ts", ".bid", ".cwc", ".dmp", ".timing",
+    ".logf", ".rtl", ".gate", ".place", ".route", ".asm",
+
+    ".mp4", ".avi", ".mov", ".mkv", ".flv", ".wmv", ".m4a", ".mp3", ".wav",
+    ".mif", ".dath", ".hex", ".coe", ".dat", ".pat"
+  ],
+
+  "_dropFileGlobs_comment": "按文件名过滤。加密 HDL 是二进制密文，AI 读不了；td_*.log 是 TD 自动生成的运行日志。",
+  "dropFileGlobs": ["*.enc.v", "*.enc.vhd", "*.enc.sv", "*_enc.v", "*.vlg.enc", "td_*.log", "encrypted_file.log"],
+
+  "_copy_comment": "二进制文档(PDF/Office)和图片默认只登记不复制，避免 ai/files 里出现重复的大文件。",
+  "copyBinaryDocs": false,
+  "copyImages": false,
+
+  "listOnlyExtensions": [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".vsdx", ".dwg", ".sch"],
+
+  "imageExtensions": [".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tif", ".tiff", ".webp"],
+
+  "textExtensions": [
+    ".v", ".sv", ".vh", ".svh", ".vhd", ".vhdl",
+    ".xdc", ".sdc", ".adc", ".fdc", ".pdc", ".lpf", ".qsf", ".qpf", ".al", ".prj", ".cst", ".ucf",
+    ".c", ".h", ".cpp", ".hpp", ".cc", ".py", ".m", ".s", ".ld", ".mk",
+    ".tcl", ".sh", ".bat", ".ps1", ".mjs", ".js", ".json", ".xml", ".yaml", ".yml",
+    ".md", ".txt", ".rst", ".csv", ".ini", ".cfg", ".conf", ".html", ".htm", ".svg",
+    ".rpt", ".log", ".summary", ".sopcinfo", ".ipx", ".xci", ".qip", ".ipc", ".bmm", ".ut"
+  ],
+
+  "hdlExtensions": [".v", ".sv", ".vh", ".svh", ".vhd", ".vhdl"],
+
+  "constraintExtensions": [".xdc", ".sdc", ".adc", ".fdc", ".pdc", ".lpf", ".qsf", ".cst", ".ucf"],
+
+  "reportExtensions": [".rpt", ".log", ".summary"],
+
+  "maxFileLines": 1500,
+  "maxConstraintLines": 250,
+  "maxReportHead": 50,
+  "maxReportTail": 60,
+  "minReportBytes": 2048,
+
+  "_bigfile_comment": "超过此大小的文本文件只登记+预览开头，避免单个工具配置文件(如 modelsim.ini)吃掉大量 token。",
+  "bigFileBytes": 81920,
+  "bigFilePreviewLines": 60,
+  "packMaxFiles": 40,
+  "packMaxTokens": 45000,
+
+  "treeMaxDepth": 3,
+  "treeMaxEntries": 400
+}
