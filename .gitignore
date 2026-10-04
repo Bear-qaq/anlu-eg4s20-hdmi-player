@@ -1,0 +1,58 @@
+# 派生产物 —— 由 tools/pack.mjs 生成，不要提交
+ai/
+ai_pack_*.zip
+handoff_*.zip
+raw/
+vendor_bringup/
+dist/
+
+# 厂家官方资料和加密黑盒不进入公开仓库
+src/vendor/*
+!src/vendor/README.md
+
+# DSH 项目配置：skills 要提交，可能的运行时状态不要
+.dsh/*
+!.dsh/skills/
+
+# FPGA 工具链构建产物
+runs/
+*.runs/
+
+# TD(Tang Dynasty) 的构建目录：<工程名>_Runs，以及 tools/td_build.mjs 的产物
+*_Runs/
+*_runs/
+build/
+td_*.log
+td_*.logw
+
+# ModelSim 仿真产物（sim/run.mjs 生成）
+sim/work/
+sim/transcript
+sim/*.log
+.cache/
+.Xil/
+.ip_user_files/
+.sim/
+.hw/
+db/
+incremental_db/
+greybox_tmp/
+work/
+output_files/
+*.jou
+*.log
+*.str
+*.pbj
+*.bit
+*.fs
+*.sof
+*.pof
+*.dcp
+*.ltx
+*.qws
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
