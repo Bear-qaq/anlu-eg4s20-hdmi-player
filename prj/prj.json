@@ -1,0 +1,19 @@
+{
+  "_comment": "本工程（不是例程）的构建清单。tools/td_build.mjs 读它生成 .al/.prj/settings.cfg。",
+  "name": "hdmi_player",
+  "top": "top",
+  "deviceChip": "EG4S20BG256",
+  "device": "eagle_s20.db",
+  "package": "EG4S20BG256",
+
+  "sourcesRtl": "src/rtl",
+  "sourcesVendor": "src/vendor",
+
+  "adc": ["constr/pin_damuzhi.adc"],
+  "sdc": ["constr/timing.sdc"],
+
+  "_shim_comment": "厂商加密黑盒里写死了 #include \"../user_source/hdl_source/include/global_def.v\"，该路径按「工程目录」解析而不是按源文件目录。所以在 build/<name>/ 下造出这个相对路径。",
+  "shim": {
+    "user_source/hdl_source/include/global_def.v": "prj/global_def.v"
+  }
+}
