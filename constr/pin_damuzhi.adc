@@ -1,0 +1,73 @@
+# =============================================================================
+# 引脚约束 —— 「大拇指」安路 EG4S20 开发板（核心板 DMZ_Anlogic + M0 底板）
+#
+# 当前状态（2026-10-04）：本文件已由 prj/prj.json 正式启用，RTL 也已同步完成：
+#   - 数码管改为 4 位、段选高有效、位选低有效
+#   - key1 = E3 独立按键；key2 = 矩阵键盘任意键
+#   - 顶层已移除 HDMI DDC/EDID 端口
+#
+# 引脚来源：
+#   1. 核心板引脚表与厂家 ADC 示例：RSTn=A9、CLK=R7、数码管、矩阵键盘
+#   2. M0 底板引脚表：HDMI、SD 卡
+#
+# 重要：TD 的 .adc 文件只接受 # 注释，不能写 // 注释。
+# =============================================================================
+
+# ---- 系统时钟与复位 ----
+# 厂家 PWM_DAC_DDS 与 SD_Card_SPI 示例都把 SW0/A9 配成 PULLDOWN。
+# 当前设计沿用该做法；上板调试时 SW0 必须拨到高电平，否则 rst_n 保持低有效。
+set_pin_assignment { clk }   { LOCATION = R7; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; }
+set_pin_assignment { rst_n } { LOCATION = A9; IOSTANDARD = LVCMOS33; PULLTYPE = PULLDOWN; }
+
+# ---- HDMI TMDS 差分对（正端；负端由 LVDS33 自动配对）----
+set_pin_assignment { HDMI_CLK_P } { LOCATION = P1; IOSTANDARD = LVDS33; PULLTYPE = NONE; }
+set_pin_assignment { HDMI_D0_P  } { LOCATION = N1; IOSTANDARD = LVDS33; PULLTYPE = NONE; }
+set_pin_assignment { HDMI_D1_P  } { LOCATION = P4; IOSTANDARD = LVDS33; PULLTYPE = NONE; }
+set_pin_assignment { HDMI_D2_P  } { LOCATION = J3; IOSTANDARD = LVDS33; PULLTYPE = NONE; }
+
+# ---- SD 卡（M0 底板为 SPI 模式）----
+set_pin_assignment { sd_ncs  } { LOCATION = F13; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { sd_mosi } { LOCATION = F14; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { sd_dclk } { LOCATION = F15; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { sd_miso } { LOCATION = D14; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; }
+
+# ---- 数码管（4 位；段选高有效、位选低有效）----
+# 段序号：seg_data[0]=a [1]=b [2]=c [3]=d [4]=e [5]=f [6]=g [7]=DP
+# 位选 seg_sel[0] 是最右一位，与扫描顺序一致，无需交换。
+set_pin_assignment { seg_data[0] } { LOCATION = A4; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[1] } { LOCATION = A6; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[2] } { LOCATION = B8; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[3] } { LOCATION = E8; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[4] } { LOCATION = A7; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[5] } { LOCATION = B5; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[6] } { LOCATION = A8; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_data[7] } { LOCATION = C8; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_sel[0]  } { LOCATION = C9; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_sel[1]  } { LOCATION = B6; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_sel[2]  } { LOCATION = A5; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { seg_sel[3]  } { LOCATION = A3; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+
+# ---- 独立按键：key1 = E3，低有效，需要上拉 ----
+set_pin_assignment { key1 } { LOCATION = E3; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; }
+
+# ---- 4x4 矩阵键盘 ----
+# 当前 RTL 把四列同时拉低，读取四行的“任意键”合成信号，作为 key2。
+# 行列均为低有效；行输入需要上拉。
+set_pin_assignment { key_col[0] } { LOCATION = E11; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { key_col[1] } { LOCATION = D11; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { key_col[2] } { LOCATION = C11; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { key_col[3] } { LOCATION = F10; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
+set_pin_assignment { key_row[0] } { LOCATION = E10; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; }
+set_pin_assignment { key_row[1] } { LOCATION = C10; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; }
+set_pin_assignment { key_row[2] } { LOCATION = F9;  IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; }
+set_pin_assignment { key_row[3] } { LOCATION = D9;  IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; }
+
+# =============================================================================
+# 备用资源（当前设计未使用，仅记录已核实的引脚）
+#   片内 ADC：CH1=M10 CH2=L10 CH3=P11 CH4=M12
+#   12 个 LED（高电平点亮）：B14 B15 B16 C15 C16 E13 E16 F16 D3 E4 C1 C2
+#   3 Hz 时钟：F5
+#   蜂鸣器：H11
+#   UART：RXD=F12，TXD=D12
+#   拨码开关 SW_In[7:0]：A9 A10 B10 A11 A12 B12 A13 A14
+# =============================================================================
